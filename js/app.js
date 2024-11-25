@@ -11,6 +11,7 @@ class App {
     #map; // Private variable to store the Leaflet map instance
     #lastClickedLocation;  // Stores the last clicked map coordinates
     locations = []; // Array to store all saved locations
+    filteredLocations = []; // Array for storing filtered locations based on tab selection
 
 
     constructor() {
@@ -128,7 +129,8 @@ class App {
         // Add location to the array
         this.locations.push(location);
 
-        console.log(this.locations);
+        // Add a marker on the map
+        this._addLocationMarker(location, true);
         
         
     }
@@ -144,6 +146,38 @@ class App {
             .addTo(this.#map)
             .bindPopup('You are here', { autoClose: false, closeOnClick: false })
             .openPopup(); // Automatically open the popup
+    }
+
+
+    _addLocationMarker(location, shouldOpenPopup = false) {
+
+        const { type, created_at, coords } = location;
+        const [lat, lng] = coords;
+    
+        const iconPath = `images/popup-${type.toLowerCase().replace(/\s+/g, '-')}.png`; // Path for the icon
+        const icon = `<img src="${iconPath}" width="20" height="20">`;
+    
+        // Ensure map exists before adding a marker
+        if (!this.#map) return;
+    
+        const marker = L.marker([lat, lng])
+            .addTo(this.#map)
+            .bindPopup(
+                L.popup({
+                    maxWidth: 250,
+                    minWidth: 100,
+                    autoClose: false,
+                    closeOnClick: false,
+                    className: `popup-${type.toLowerCase().replace(/\s+/g, '-')}`,
+                }).setContent(
+                    `<div>${icon}</div><div>${type}<br><small>${created_at}</small></div>`
+                )
+            );
+    
+        // Open popup if specified
+        if (shouldOpenPopup) {
+            marker.openPopup();
+        }
     }
 
 }
