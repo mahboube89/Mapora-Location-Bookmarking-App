@@ -3,6 +3,8 @@
  * Licensed under the MIT License;
 */
 
+import { showNotification } from "./utils.js";
+
 export class LocationManager {
 
     constructor(locationOptions, confirmSelection,cancelSelection, addLocationToMap) {
@@ -61,7 +63,7 @@ export class LocationManager {
         // Get the selected radio button
         const selectedRadio = document.querySelector('input[name="locationType"]:checked');
         if(!selectedRadio) {
-            alert("Please select a location type.");
+            showNotification("Please select a location type.", "error");
             return;
         }     
                

@@ -35,9 +35,9 @@ export function showNotification( message, type = 'success') {
     };
     document.addEventListener("keydown", keydownHandler);
 
-    setTimeout(() => {
-        closeHandler();
-    }, 4000);
+    // setTimeout(() => {
+    //     closeHandler();
+    // }, 4000);
 
 }
 

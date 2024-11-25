@@ -103,6 +103,7 @@ html {
     font-size: 62.5%; /* 10px */
     box-sizing: border-box;
     scroll-behavior: smooth;
+    height: 100vh;
 }
 
 *,
@@ -264,6 +265,7 @@ a:visited {
     flex-basis: 40%;
     align-items: center;
     z-index: 2;
+    height: 100%;
 }
 
 .logo {
@@ -539,7 +541,8 @@ a:visited {
     position: relative;
     overflow: hidden;
     overflow-y: auto;
-    height: 540px;
+    height: 570px;
+    border-bottom: #aaa;
 }
 
 .location-widget__content-inner {
@@ -614,14 +617,10 @@ a:visited {
     cursor: pointer;
 }
 
-.location-actions__delete-btn i {
-    color: var(--color-light-secondary);
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.location-actions__delete-btn:is(:hover) i {
-    transform: scale(1.2); 
-    color: var(--color-danger); 
+.location-actions__delete-btn:is(:hover) #trash-svg path {
+    transform: scale(1.1); 
+    stroke: var(--color-danger); 
+    transition: transform 0.2s ease, stroke 0.2s ease;
 }
 
 /*
