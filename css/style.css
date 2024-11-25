@@ -310,7 +310,7 @@ a:visited {
 }
 
 .location-selector__btn--confirm {
-    background: #016c3a; 
+    background: #01743e; 
     
 }
 
@@ -321,11 +321,13 @@ a:visited {
 
 .location-selector__btn--cancel {
     border: 1px solid #aaa;
+    color: #aaa;
 }
 
 .location-selector__btn--cancel:is(:hover) {
     border: 1px solid #f9f9f9;
     transform: scale(0.99);
+    color: #f9f9f9;
 }
 
 /*
@@ -442,6 +444,89 @@ a:visited {
 }
 
 .location-widget__content-inner > div { min-width: var(--tab-width); }
+
+/*
+====================
+    LOCATION TAB    
+====================
+*/
+
+.location-tab {
+    border-radius: 5px;
+    text-align: right;
+    width:100%;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin: 8px 0;
+    width: 100% !important;
+    gap:.5rem;
+    padding: 1rem;
+    border: 1px solid var(--color-light--1);
+    cursor: pointer;
+}
+
+.location-tab--want-to-go,
+.popup-want-to-go {
+    border-left: 5px solid var(--color-brand--1);
+}
+
+.location-tab--travel-plans,
+.popup-travel-plans {
+    border-left: 5px solid var(--color-brand--2);
+}
+
+.location-tab--favorites,
+.popup-favorites {
+    border-left: 5px solid var(--color-brand--3);
+}
+
+.location-tab__icon {
+
+}
+
+
+
+.location-tab__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+}
+
+.location-info {
+    color: #b3b1b1;
+}
+
+.location-info__date {
+
+}
+
+.location-info__note {
+    max-height:48px ;
+    overflow: hidden;
+}
+
+.location-actions {
+
+}
+
+.location-actions__delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.location-actions__delete-btn i {
+    color: #f9f9f9;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.location-actions__delete-btn:is(:hover) i {
+    transform: scale(1.2); 
+    color: #ff6347; 
+}
 
 
 

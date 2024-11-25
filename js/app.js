@@ -12,7 +12,7 @@ class App {
     #lastClickedLocation;  // Stores the last clicked map coordinates
     locations = []; // Array to store all saved locations
     filteredLocations = []; // Array for storing filtered locations based on tab selection
-
+    savedMarkers = []; // Array to store saved markers
 
     constructor() {
 
@@ -21,9 +21,37 @@ class App {
     
         // Load the map based on user's geolocation
         this._getLocation();
+
+        // Set up event listeners
+        this._setEventListener();
+
+        // Set the "all" tab as selected by default
+        document.getElementById("all").checked = true;
     }
 
- 
+    _setEventListener() {
+
+        // Add event listeners to each tab for filtering locations
+        const tabs = document.querySelectorAll(".location-widget__tab-input");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("change", (e) => {              
+                const tabType = e.target.id; // e.g., "all", "want-to-go"
+                this._renderLocation(tabType);               
+            });
+        });
+
+        document.getElementById('locateMe').addEventListener('click', () => {
+            this._locateUser();
+        });
+
+        document.getElementById('logo').addEventListener('click', () => {
+            this._locateUser();
+        });
+
+
+    }
+
 
     async _getLocation() {  
 
@@ -86,7 +114,7 @@ class App {
                     const coords = [latitude, longitude];
     
                     // Center the map on the user's current location
-                    this.#map.flyTo(coords, 13, {
+                    this.#map.flyTo(coords, 15, {
                         animate: true,
                         duration: 1, // Smooth animation duration
                         easeLinearity: 0.2,
@@ -131,6 +159,9 @@ class App {
 
         // Add a marker on the map
         this._addLocationMarker(location, true);
+
+        // Update the "All" tab to include the new location
+        this._renderLocation("all");
         
         
     }
@@ -177,6 +208,82 @@ class App {
         // Open popup if specified
         if (shouldOpenPopup) {
             marker.openPopup();
+        }
+    }
+
+    _renderLocation(tabType) {
+
+        const contentInner = document.querySelector(".location-widget__content-inner");
+        contentInner.innerHTML = ""; // Clear previous content
+
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("wrapper");
+
+        // Filter locations based on selected tab
+        this.filteredLocations = tabType === "all"
+        ? this.locations 
+        : this.locations.filter(location => location.type.toLowerCase() === tabType)
+
+        this.filteredLocations.forEach(location => {
+        
+            const locationHTML = `
+                <div class="location-tab location-tab--${location.type}" data-id="${location.id}" >
+                    <div class="location-tab__icon">
+                        <img src="images/popup-${location.type}.png" width="25" height="25">
+                    </div>
+                    <div class="location-tab__content">
+                        <div class="location-info" >
+                            <p class="location-info__date">Saved at <span>${location.created_at}</span></p>
+                            <p class="location-info__note">${location.notes || 'No notes available'}</p>
+                        </div>
+                        <div class="location-actions" >
+                            <button class="location-actions__delete-btn"><i class="fa-regular fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            wrapper.insertAdjacentHTML("beforeend", locationHTML);
+        });
+      
+        // Append filtered locations
+        if (this.filteredLocations.length > 0) {
+            contentInner.appendChild(wrapper);
+        }
+        
+        // Add event listener to each location element
+        const locationElements = wrapper.querySelectorAll(".location-tab");
+        locationElements.forEach(locationElement => {
+            locationElement.addEventListener( "click", (e) => this._moveToLocation(e));
+        });
+
+    }
+
+    _moveToLocation(event){
+        const locationId = event.currentTarget.dataset.id;
+
+        const location = this.locations.find( (loc) => loc.id === locationId);
+
+        if (location && location.coords) {
+            const [lat, lng] = location.coords;
+
+            this.#map.flyTo([lat, lng], 15, {
+                animate:true,
+                duration: 1, // Duration in seconds
+                easeLinearity: 0.2 // Adjust for smoother transitions                  
+            });
+
+            // Re-add the marker and open its popup
+            //this._addLocationMarker(location, true); // Pass `true` to open the popup
+
+            // Ensure the marker exists and open its popup
+            const markerIndex = this.savedMarkers.findIndex(item => item.id === locationId);
+            if (markerIndex !== -1) {
+                this.savedMarkers[markerIndex].marker.openPopup();
+            } else {
+                // If marker doesn't exist (unlikely but safe), add it
+                this._addLocationMarker(location, true);
+            }
+
         }
     }
 
