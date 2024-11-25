@@ -328,6 +328,123 @@ a:visited {
     transform: scale(0.99);
 }
 
+/*
+======================
+    LOCATION WIDGET      
+======================
+*/
+
+.location-widget {
+    width:var(--tab-width);
+    border-radius: 5px;
+    margin-top: 3rem;
+    flex-grow: 1; 
+}
+
+.location-widget__tabs {
+    position: relative;
+}
+
+.location-widget__tabs input:nth-child(1):checked ~ 
+.location-widget__buttons 
+.location-widget__active-indicator {
+    translate: 0 0;
+}
+
+.location-widget__tabs input:nth-child(2):checked ~ 
+.location-widget__active-indicator {
+    translate: var(--button-width) 0;
+}
+
+.location-widget__tabs input:nth-child(3):checked ~ 
+.location-widget__active-indicator {
+    translate: calc(var(--button-width ) * 2) 0;
+}
+
+.location-widget__tabs input:nth-child(4):checked ~ 
+.location-widget__active-indicator {
+    translate: calc(var(--button-width ) * 3) 0;
+}
+
+.location-widget__tabs input:nth-child(1):checked ~ 
+.location-widget__buttons label:nth-child(1),
+.location-widget__tabs input:nth-child(2):checked ~ 
+.location-widget__buttons label:nth-child(2),
+.location-widget__tabs input:nth-child(3):checked ~ 
+.location-widget__buttons label:nth-child(3),
+.location-widget__tabs input:nth-child(4):checked ~ 
+.location-widget__buttons label:nth-child(4) {
+    opacity: 1;
+}
+
+.location-widget__tabs input:checked ~ .location-widget__content > .location-widget__content-inner {
+    translate: 0 0;
+}
+
+
+
+.location-widget__tab-input {
+    display: none;
+}
+
+.location-widget__buttons {
+    outline: none;
+    border: 1px solid var(--color-light--1);
+    background: #24262a;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #575757;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.location-widget__buttons  label {
+    color: #f9f9f9;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    width: var(--button-width);
+    opacity: 0.35;
+    cursor: pointer;
+}
+
+.location-widget__buttons  label:not(:first-child) img {display: none;}
+
+
+.location-widget__active-indicator {
+    position: absolute;
+    left:0;
+    top:47px;
+    width: var(--button-width);
+    height: 3px;
+    background: #00C56A;
+    transition: 0.3s;
+}
+
+.location-widget__content {
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 540px;
+}
+
+.location-widget__content-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
+    width: calc(var(--tab-width) * 0);
+    transition: 0.3s;
+}
+
+.location-widget__content-inner > div { min-width: var(--tab-width); }
+
+
+
 
 
 /*

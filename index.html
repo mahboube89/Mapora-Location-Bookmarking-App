@@ -41,7 +41,7 @@
             <button id="logo" class="logo"><i class="fa-solid fa-map-location-dot"></i><span>Mapora</span></button>
             <button id="locateMe" class="locate-me-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
 
-            <!-- Location Selector -->
+            <!-- Location Selector Start-->
             <section class="location-selector location-selector--hidden" id="locationOptions">
 
                 <article class="location-selector__item">
@@ -109,7 +109,38 @@
     
                 </div>
             
-            </section>
+            </section> <!-- Location Selector End -->
+
+            <!-- Location Widget Start -->
+            <section class="location-widget">
+
+                <div class="location-widget__tabs">
+                    <input type="radio" name="group" id="all" class="location-widget__tab-input">
+                    <input type="radio" name="group" id="want-to-go" class="location-widget__tab-input">
+                    <input type="radio" name="group" id="travel-plans" class="location-widget__tab-input">
+                    <input type="radio" name="group" id="favorites" class="location-widget__tab-input">
+    
+                    <button class="location-widget__buttons">
+                        <label for="all">All</label>
+                        <label for="want-to-go"><span>Want to go</span><img  src="images/bookmark.png" alt="Bookmark icon representing locations to visit" width="25" height="25"></label>
+                        
+                        <label for="travel-plans"><span>Travel plans</span><img src="images/plan.png" alt="Plan icon representing travel plans" width="25" height="25"></label>
+    
+                        <label for="favorites"><span>Favorites</span><img src="images/heart.png" alt="Heart icon representing favorite locations" width="25" height="25"></label>
+    
+                    </button>
+    
+                    <div class="location-widget__active-indicator"></div>
+                    <div class="location-widget__content">
+                        <div class="location-widget__content-inner">
+
+                            <!-- Content dynamically populated -->
+
+                        </div>
+                    </div>
+                </div>
+
+            </section> <!-- Location Widget End -->
 
         </div><!-- ========== SIDEBAR END ========== -->
 
