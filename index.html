@@ -32,7 +32,92 @@
 
 </head>
 <body>
+    <div class="container">
+
+        <!-- ---------- SIDBAR START ---------- -->
+        <div class="sidebar">
+
+            <!-- Logo -->
+            <button id="logo" class="logo"><i class="fa-solid fa-map-location-dot"></i><span>Mapora</span></button>
+            <button id="locateMe" class="locate-me-btn"><i class="fa-solid fa-location-crosshairs"></i></button>
+
+            <!-- Location Selector -->
+            <section class="location-selector" id="locationOptions">
+
+                <article class="location-selector__item">
+                    
+                    <div class="location-selector__header">
+                        
+                        <input id="article1" type="radio" name="locationType" value="Want to go" class="location-selector__toggle accordion-toggle" >
+                        
+                        <!-- Label wraps the clickable content -->
+                        <label for="article1" class="location-selector__label">
+                            <img src="images/bookmark.png" alt="Bookmark icon representing places to visit" width="25" height="25">
+                            <span class="location-selector__checkmark accordion-checkmark"></span>
+                            <span class="location-selector__label-text">Want to go</span>
+                        </label>
     
+                        <div class="location-selector__note">
+                            <textarea class="location-selector__textarea" data-option="Want to go" rows="3" name="" placeholder="Needs to remember anything about this place?"></textarea>
+                        </div>
+                    </div>
+                    
+                </article>
+                <article class="location-selector__item">
+                    
+                    <div class="location-selector__header">
+                        
+                        <input id="article2" type="radio" name="locationType" value="Travel plans" class="location-selector__toggle accordion-toggle">
+                        
+                        <!-- Label wraps the clickable content -->
+                        <label for="article2" class="location-selector__label">
+                            <img src="images/plan.png" alt="Map icon representing planned trips" width="25" height="25">
+                            <span class="location-selector__checkmark accordion-checkmark"></span>
+                            <span class="location-selector__label-text">Travel plans</span>
+                        </label>
+    
+                        <div class="location-selector__note">
+                            <textarea class="location-selector__textarea" data-option="Travel plans" rows="3" name="" placeholder="Needs to remember anything about this place?"></textarea>
+                        </div>
+                    </div>
+                    
+                </article>
+                <article class="location-selector__item" >
+                    
+                    <div class="location-selector__header">
+                        
+                        <input id="article3" type="radio" name="locationType" value="Favorites" class="location-selector__toggle accordion-toggle">
+                        
+                        <!-- Label wraps the clickable content -->
+                        <label for="article3" class="location-selector__label">
+                            <img src="images/heart.png" alt="Heart icon representing favorite places" width="25" height="25" >
+                            <span class="location-selector__checkmark accordion-checkmark"></span>
+                            <span class="location-selector__label-text">Favorites</span>
+                        </label>
+    
+                        <div class="location-selector__note">
+                            <textarea class="location-selector__textarea" data-option="Favorites" rows="3" name="" placeholder="Needs to remember anything about this place?"></textarea>
+                        </div>
+                    </div>
+                    
+                </article>
+    
+                <!-- Buttons Wrapper -->
+                <div class="location-selector__btn-wrapper">
+                    <button class="location-selector__btn location-selector__btn--confirm" id="confirmSelection">Save</button>
+                    <button class="location-selector__btn location-selector__btn--cancel" id="cancelSelection">Cancel</button>
+    
+                </div>
+            
+            </section>
+
+        </div><!-- ========== SIDEBAR END ========== -->
+
+        <!-- ---------- MAP START ---------- -->
+        <div id="map">
+        </div><!-- ========== MAP END ========== -->
+        
+    </div>
     
 </body>
 </html>

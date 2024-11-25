@@ -117,6 +117,8 @@ body {
     height: 100vh;
     overscroll-behavior-y: none;
     background-color: #f9f9f9;
+    color: var(--color-light--2);
+    font-weight: 400;
 }
 
 .container {
@@ -129,4 +131,199 @@ body {
 a:link,
 a:visited {
   color: var(--color-brand--1);
+}
+
+
+/*
+===================
+    SIDEBAR       
+===================
+*/
+
+.sidebar {
+    position: relative;
+    background-color: var(--color-dark--1);
+    padding: 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 40%;
+    align-items: center;
+    z-index: 2;
+}
+
+.logo {
+    align-self: center;
+    margin-bottom: 2rem;
+    background: none;
+    border: none;
+    color: #00C56A;
+    font-size: 2.5rem;
+    cursor: pointer;
+}
+
+.logo span {
+    margin-left:.5rem;
+    font-size:1.6rem;
+    font-family: "Poppins Medium";
+}
+
+.locate-me-btn {
+    position: absolute; 
+    top: 7rem; 
+    left: auto;
+    right: -3.5rem;
+    font-size: 1.5rem; 
+    color: #467DF7; 
+    background-color: #f9f9f9;
+    width: 2.8rem;
+    height: 2.8rem;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer; 
+    z-index: 10;
+    transition: transform 0.2s ease;
+}
+
+.locate-me-btn:is(:hover) {transform: scale(0.95);}
+
+.location-selector {
+    max-width: 420px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s, transform 0.4s;
+}
+
+.location-selector--hidden {
+    transform: translateX(-40rem);
+    height: 0;
+    padding: 0 2.25rem;
+    margin-bottom: 0;
+    opacity: 0;
+}
+
+.location-selector__item {
+    border: 1px solid var(--color-light--1);
+    padding: 1rem;
+    margin: .5rem auto;
+    border-radius: 5px;
+}
+
+.location-selector__header {
+
+}
+
+.location-selector__toggle {display: none;}
+
+.location-selector__label {
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 30rem;
+}
+
+.location-selector__checkmark {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 100px;
+    border: 1px solid #00C56A;
+    box-shadow: 0px 0px 0px 0px #00C56A inset;
+    transition: all 0.15s cubic-bezier(0, 1.05, 0.72, 1.07);
+    cursor: pointer;
+    order:2;
+}
+
+.location-selector__toggle:checked  + label .location-selector__checkmark {
+    border-color: #00C56A;
+    box-shadow: 0px 0px 0px 15px #00C56A inset;
+}
+
+.location-selector__toggle:checked  + label .location-selector__checkmark::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+.location-selector__label-text {
+    cursor: pointer;
+    flex-grow: 1;
+    margin-left: .5rem;
+}
+
+.location-selector__note {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0;
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+.location-selector__toggle:checked ~ .location-selector__note {
+    max-height: 200px;
+    overflow: visible;
+}
+
+.location-selector__textarea {
+    grid-column: 1/3;
+    grid-row: 2/3;
+    width: 100%;
+    padding: 8px;
+    color: #ddd;
+    border: 1px solid var(--color-light--1);
+    border-radius: 4px;
+    min-height: fit-content;
+    overflow: hidden;
+    outline: 0;
+    background-color: var(--color-dark--1);
+    margin-top: 1rem;
+}
+
+.location-selector__textarea {
+    font-size: 1rem;
+    color: #aaa;
+}
+
+.location-selector__btn-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-top: 12px;
+}
+
+.location-selector__btn {
+    width: 50%;
+    height: 3.5rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background: var(--color-dark--1);
+    cursor: pointer;
+    color: #f9f9f9;
+    transition: transform 0.15s ease-in;
+}
+
+.location-selector__btn--confirm {
+    background: #016c3a; 
+    
+}
+
+.location-selector__btn--confirm:is(:hover) {
+    border: 1px solid #00C56A;
+    transform: scale(0.99);
+}
+
+.location-selector__btn--cancel {
+    border: 1px solid #aaa;
+}
+
+.location-selector__btn--cancel:is(:hover) {
+    border: 1px solid #f9f9f9;
+    transform: scale(0.99);
 }
