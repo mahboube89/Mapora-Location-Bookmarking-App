@@ -12,7 +12,12 @@ class App {
     #lastClickedLocation;  // Stores the last clicked map coordinates
     locations = []; // Array to store all saved locations
     filteredLocations = []; // Array for storing filtered locations based on tab selection
-    savedMarkers = []; // Array to store saved markers
+    savedMarkers = new Map() // Map to store saved markers
+
+    #locateButton;
+    #logoButton;
+    #locationTabs;
+    #contentContainer
 
     constructor() {
 
@@ -21,6 +26,12 @@ class App {
     
         // Load the map based on user's geolocation
         this._getLocation();
+
+        // Store DOM elements
+        this.#locateButton = document.getElementById('locateMe');
+        this.#logoButton = document.getElementById('logo');
+        this.#locationTabs = document.querySelectorAll(".location-widget__tab-input");
+        this.#contentContainer = document.querySelector(".location-widget__content-inner");
 
         // Set up event listeners
         this._setEventListener();
@@ -33,15 +44,8 @@ class App {
     }
 
     _setEventListener() {
-
-        document.getElementById('locateMe').addEventListener('click', () => {
-            this._locateUser();
-        });
-
-        document.getElementById('logo').addEventListener('click', () => {
-            this._locateUser();
-        });
-
+        this.#locateButton.addEventListener('click', () => this._locateUser());
+        this.#logoButton.addEventListener('click', () => this._locateUser());
     }
 
 
@@ -57,7 +61,6 @@ class App {
                 if (!position) {
                     throw new Error("Position is undefined.");
                 }
-                console.log(position);
                 
                 this._loadMap(position);
                 
@@ -106,27 +109,30 @@ class App {
         });
     }
 
-    _locateUser() {
+    async _locateUser() {
+
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    const coords = [latitude, longitude];
+            try {
+                const position = await new Promise((resolve, reject) =>
+                    navigator.geolocation.getCurrentPosition(resolve, reject)
+                );
     
-                    // Center the map on the user's current location
-                    this.#map.flyTo(coords, 15, {
-                        animate: true,
-                        duration: 1, // Smooth animation duration
-                        easeLinearity: 0.2,
-                    });
+                const { latitude, longitude } = position.coords;
+                const coords = [latitude, longitude];
     
-                    // Add or update the current location marker
-                    this._addCurrentLocationMarker(coords);
-                },
-                () => {
-                    alert('Could not retrieve your location. Please enable location services.');
-                }
-            );
+                // Center the map on the user's current location
+                this.#map.flyTo(coords, 15, {
+                    animate: true,
+                    duration: 1, // Smooth animation duration
+                    easeLinearity: 0.2,
+                });
+    
+                // Add or update the current location marker
+                this._addCurrentLocationMarker(coords);
+            } catch (error) {
+                alert('Could not retrieve your location. Please enable location services.');
+            }
+            
         } else {
             alert('Geolocation is not supported by your browser.');
         }
@@ -213,16 +219,15 @@ class App {
             marker.openPopup();
         }
 
-        // Store the marker with its location ID
-        this.savedMarkers.push({ id: location.id, marker });
+        // Add the marker to the Map using locationId as the key
+        this.savedMarkers.set(location.id, marker);
+
     }
 
     _setEventListenerToTabs() {
 
         // Add event listeners to each tab for filtering locations
-        const tabs = document.querySelectorAll(".location-widget__tab-input");
-
-        tabs.forEach(tab => {
+        this.#locationTabs.forEach(tab => {
             tab.addEventListener("change", (e) => {              
                 const tabType = e.target.id; // e.g., "all", "want-to-go"
                 this._renderLocation(tabType);               
@@ -233,8 +238,7 @@ class App {
 
     _renderLocation(tabType) {
 
-        const contentInner = document.querySelector(".location-widget__content-inner");
-        contentInner.innerHTML = ""; // Clear previous content
+        this.#contentContainer.innerHTML = ""; // Clear previous content
 
         const savedLocationsWrapper = document.createElement("div");
         savedLocationsWrapper.classList.add("saved-location-wrapper");
@@ -267,7 +271,7 @@ class App {
       
         // Append filtered locations
         if (this.filteredLocations.length > 0) {
-            contentInner.appendChild(savedLocationsWrapper);
+            this.#contentContainer.appendChild(savedLocationsWrapper);
         }
         
         // Add event listener to each location element
@@ -296,9 +300,9 @@ class App {
             });
 
             // Ensure the marker exists and open its popup
-            const markerIndex = this.savedMarkers.findIndex(item => item.id === locationId);
-            if (markerIndex !== -1) {
-                this.savedMarkers[markerIndex].marker.openPopup();
+            const marker = this.savedMarkers.get(locationId);
+            if (marker) {
+                marker.openPopup();
             } else {
                 // If marker doesn't exist (unlikely but safe), add it
                 this._addLocationMarker(location, true);
@@ -365,31 +369,29 @@ class App {
         
     
         // Find the marker associated with the location
-        const markerIndex = this.savedMarkers.findIndex(item => item.id === locationId);
-        if (markerIndex !== -1) {
-            
-            this.#map.removeLayer(this.savedMarkers[markerIndex].marker); // Remove the marker from the map
-            this.savedMarkers.splice(markerIndex, 1); // Remove the marker reference
-        } else {
-            console.log('Marker not found for location ID:', locationId); // Debugging statement
+        const marker = this.savedMarkers.get(locationId);
+        if (marker) {
+            this.#map.removeLayer(marker); // Remove the marker from the map
+            this.savedMarkers.delete(locationId); // Remove the marker from the Map
         }
     
         // Update localStorage with the new locations array
         this._saveLocationsToStorage();
     
         // Dynamically remove the tab from the DOM
-        const tabElement = document.querySelector(`.tab[data-id="${locationId}"]`);
+        const tabElement = document.querySelector(`.location-tab[data-id="${locationId}"]`);
         if (tabElement) {
             tabElement.remove(); // Remove the tab element from the DOM
         }
 
-        // Optionally, display a message or refresh the UI state
-        if (this.locations.length === 0) {
-            const contentInner = document.querySelector(".content-inner");
-            // contentInner.innerHTML = "<p>No saved locations available.</p>";
-        }
+        // Optionally, update the UI if no locations are left
+    if (this.locations.length === 0) {
+        console.log("No saved locations available.");
+    }
     
     }
+
+
 
     // Remove all items from localStorage
     reset() {
