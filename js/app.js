@@ -10,6 +10,8 @@ class App {
 
     #map; // Private variable to store the Leaflet map instance
     #lastClickedLocation;  // Stores the last clicked map coordinates
+    locations = []; // Array to store all saved locations
+
 
     constructor() {
 
@@ -112,8 +114,21 @@ class App {
 
     _addNewLocation(locationData) {
         
+        if( !this.#lastClickedLocation) return; 
+  
+        const {lat, lng} = this.#lastClickedLocation;
+        // Add location to the array
+        
+        // Combine location data with coordinates
+        const location = {
+            ...locationData,
+            coords: [lat, lng]
+        }
 
         // Add location to the array
+        this.locations.push(location);
+
+        console.log(this.locations);
         
         
     }

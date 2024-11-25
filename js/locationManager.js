@@ -22,7 +22,7 @@ export class LocationManager {
         this.selectedLocationType = null;
 
         // Reference to the textarea for notes
-        this.noteField = document.querySelector(".note-field-textarea");
+        this.noteField = document.querySelector(".location-selector__textarea");
 
         // Set up event listeners for confirm and cancel buttons
         this._setEventListener();
@@ -55,5 +55,43 @@ export class LocationManager {
         }
     }
 
+
+    _confirmSelection() {
+        
+        // Get the selected radio button
+        const selectedRadio = document.querySelector('input[name="locationType"]:checked');
+        if(!selectedRadio) {
+            alert("Please select a location type.");
+            return;
+        }     
+               
+        // Format the date to a readable string (e.g., "Aug 21, 2024")
+        const formattedDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+
+        // Get the selected type and corresponding notes
+        const selectedType = selectedRadio.value;
+        const noteField = document.querySelector(`.location-selector__textarea[data-option="${selectedType}"]`);
+        const notes = noteField ? noteField.value : '';
+        
+        // Prepare location data object
+        const locationData = {
+            id: (Date.now() + '').slice(-10),
+            type: selectedType.toLowerCase().replace(/\s+/g, '-'),
+            notes,
+            created_at: formattedDate
+        }
+        
+        // Pass the location data to the callback (App class method)
+        if(this.addLocationToMap) {
+            this.addLocationToMap(locationData);
+            
+        }
+    }
+
+    hideAndResetOptions() {}
 
 }
