@@ -295,11 +295,11 @@ a:visited {
     right: -3.5rem;
     font-size: 1.5rem; 
     color: var(--color-primary); 
-    background-color: var(--color-light-secondary);
-    width: 2.8rem;
-    height: 2.8rem;
+    background-color: #ffff;
+    width: 2.9rem;
+    height: 2.9rem;
     display: flex; 
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     border-radius: 50%;
     border: 2px solid rgba(0, 0, 0, 0.2);
