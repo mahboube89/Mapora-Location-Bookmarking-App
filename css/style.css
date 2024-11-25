@@ -267,18 +267,24 @@ a:visited {
 }
 
 .logo {
-    align-self: center;
     margin-bottom: 2rem;
     background: none;
     border: none;
     color: var(--color-success);
     font-size: 2.5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.logo img {
+    width: 3rem;
+    height: 3rem;
 }
 
 .logo span {
-    margin-left:.5rem;
     font-size:1.6rem;
+    font-weight: 600;
     font-family: "Poppins Medium";
 }
 
@@ -420,10 +426,7 @@ a:visited {
     transition: transform 0.15s ease-in;
 }
 
-.location-selector__btn--confirm {
-    background: var(--color-success-dark); 
-    
-}
+.location-selector__btn--confirm { background: var(--color-success-dark); }
 
 .location-selector__btn--confirm:is(:hover) {
     border: 1px solid var(--color-success);
@@ -455,9 +458,7 @@ a:visited {
     flex-grow: 1; 
 }
 
-.location-widget__tabs {
-    position: relative;
-}
+.location-widget__tabs { position: relative;}
 
 .location-widget__tabs input:nth-child(1):checked ~ 
 .location-widget__buttons 
@@ -495,11 +496,7 @@ a:visited {
     translate: 0 0;
 }
 
-
-
-.location-widget__tab-input {
-    display: none;
-}
+.location-widget__tab-input {display: none;}
 
 .location-widget__buttons {
     outline: none;
@@ -604,9 +601,7 @@ a:visited {
     text-align: left;
 }
 
-.location-info {
-    color: var(--color-light--1);
-}
+.location-info {color: var(--color-light--1);}
 
 .location-info__note {
     max-height:48px ;
@@ -635,7 +630,7 @@ a:visited {
 ===================
 */
 .copyright {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     text-align: center;
     color: var(--color-light--1);
     margin-bottom: 1rem;
@@ -649,8 +644,7 @@ a:visited {
 
 .social-link:hover,
 .social-link:active {
-color: var(--color-light-secondary);
-}
+color: var(--color-light-secondary);}
 
 
 /*
@@ -688,11 +682,140 @@ color: var(--color-light-secondary);
     margin: 8px 16px;
     width: 100% !important;
     gap:.5rem;
-
 }
   
 .leaflet-popup-content img {margin-right:1px;}
 
-.leaflet-popup-content:last-child {
-    text-align: left;
+.leaflet-popup-content:last-child {text-align: left;}
+
+
+/*
+=====================
+    MEDIA QUERIES   
+=====================
+*/
+
+@media (max-width: 992px) {
+    .sidebar {
+        padding: 1rem 2rem;
+    }
+}
+
+
+@media (max-width: 853px) {
+
+    .container { flex-direction: column;}
+
+    .sidebar {
+        flex-basis: auto;
+        width: 100%; /* Full width on smaller screens */
+        max-width: 100%;
+        height: 50vh;
+        overflow-y: scroll;
+        order: 1;
+        overflow-x: hidden;
+    }
+    
+    #map { height: 50vh;}
+
+    .locate-me-btn {display: none;}
+
+    .logo {
+        flex-direction: row;
+        align-items: center;           
+        margin-top: 1rem;
+    }
+
+    .logo span{
+        margin-left: 0;
+        font-size: 1.5rem;
+    }
+}
+
+/* This applies to screens 768px wide or smaller */
+@media (max-width: 768px) {
+
+    .logo {font-size: 2rem;}
+
+    .logo span { font-size: 1.2rem;}
+
+    .logo img {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+}
+
+/* This applies to screens 576px wide or smaller */
+@media (max-width: 576px) { }
+
+
+/* This applies to screens 480px wide or smaller */
+@media (max-width: 480px) {
+
+    :root {
+        --button-width: 88px;
+    }
+
+    .sidebar { padding: 1rem 2rem;}
+    .location-selector{ width: 100%;}
+
+    .location-selector article , .location-selector__label{ width: 100%;}
+
+    .location-widget__content-inner {width: 100%;}
+
+    .location-widget__content-inner > div { min-width: 100%;}
+    .location-widget {
+        width: 100%;
+    }
+
+    .location-widget__buttons label:not(:first-child) img {
+         display: block;
+         margin: 0 auto;
+    }
+
+    .location-widget__buttons label:not(:first-child) span { display: none;}
+
+    .location-widget__active-indicator {width: var(--button-width)}
+
+    .location-tab{
+        font-size:1rem;
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 430px) {
+    :root {
+        --button-width: 79px;
+    }
+
+    .logo span{
+        font-size: 1rem;
+        margin-left: 0;
+    }
+
+    .logo img {
+        width: 2rem;
+        height: 2rem;
+    }
+
+}
+
+@media (max-width: 414px) {
+    :root {
+        --button-width: 75px;
+    }
+}
+
+@media (max-width: 390px) {
+    :root {
+        --button-width: 69px;
+    }   
+}
+
+@media (max-width: 375px) {
+    :root {
+        --button-width: 66px;
+    }   
 }

@@ -66,7 +66,10 @@ class App {
     
             if (!position) throw new Error("Position is undefined.");
             
-            this._loadMap(position);
+            // Only initialize the map if it's not already initialized
+            if (!this.#map) {
+                this._loadMap(position);
+            }
             
             return position; // Return the position object
 
@@ -95,7 +98,7 @@ class App {
             this._addCurrentLocationMarker(coords);
 
             // Notify the user of a successful location retrieval
-            showNotification("Location retrieved successfully!", "success");
+            showNotification("Centered map on your location.", "success");
 
         } catch (error) {
             console.error("Location retrieval failed:", error.message);
