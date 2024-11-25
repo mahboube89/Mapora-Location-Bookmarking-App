@@ -22,8 +22,8 @@ Here's a look at the application in action:
 ![desktop-view-3](./images/screenshots/desktop-view-3.png)
 
 - **Mobile View**
-[mobile-view-1](./images/screenshots/mobile-view-1.png)
-[mobile-view-2](./images/screenshots/mobile-view-2.png)
+![mobile-view-1](./images/screenshots/mobile-view-1.png)
+![mobile-view-2](./images/screenshots/mobile-view-2.png)
 
 ### Features
 
