@@ -1,0 +1,132 @@
+/*
+=====================
+    RESET CSS        
+=====================
+*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/*
+=====================
+    FONT-FACE        
+=====================
+*/
+@font-face {
+    font-family: "Poppins";
+    src: url("../fonts/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Poppins Medium";
+    src: url("../fonts/Poppins-Medium.ttf") format("truetype");
+}
+
+
+/*
+=====================
+    BASE STYLES       
+=====================
+*/
+
+:root {
+
+    /* Color */
+    --color-brand--2: #f6ac23;
+    --color-brand--1: #467DF7;
+    --color-brand--3: #F94646;
+    --color-brand--4: #FFD41E;
+  
+    
+    --color-dark--1: #2d3439;
+    --color-dark--1: #24262a;
+    --color-dark--2: #42484d;
+    --color-light--1: #aaa;
+    --color-light--2: #ececec;
+    --color-light--3: rgb(214, 222, 224);
+
+    --tab-width: 400px;
+    --button-width: 100px;
+}
+
+
+html {
+    font-size: 62.5%; /* 10px */
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.6rem; /* 16px */
+    line-height: 1.75;
+    height: 100vh;
+    overscroll-behavior-y: none;
+    background-color: #f9f9f9;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 1.5rem;
+    display: flex;
+}
+
+a:link,
+a:visited {
+  color: var(--color-brand--1);
+}
