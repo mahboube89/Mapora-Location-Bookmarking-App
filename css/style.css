@@ -133,7 +133,117 @@ a:visited {
   color: var(--color-brand--1);
 }
 
+/* Scroll */
+::-webkit-scrollbar {width: 5px;}
 
+::-webkit-scrollbar-track {border-inline-start: 1px solid var(--color-light--1);}
+
+::-webkit-scrollbar-thumb {background-color: var(--color-light--1);}
+
+
+
+/*
+===================
+    NOTIFICATION     
+===================
+*/
+.notification {
+    position: fixed;
+    top: 0.5rem;
+    right: 1rem;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: hsl(0, 0%, 20%);
+    overflow-x: hidden;
+    padding: 0.25rem;
+    z-index: 1000;
+
+}
+
+.notification__message {
+    display: grid;
+    grid-gap: 0.2rem;
+    grid-template-columns: 1fr auto;
+    gap: 5px;
+    padding: 0.5rem 1rem;
+    margin: 1rem .5rem;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.1);
+    border-left: 0.5rem solid #f9f9f9;
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.7s cubic-bezier(0.445, 0.05, 0.55, 0.95),
+                opacity 0.7s cubic-bezier(0.445, 0.05, 0.55, 0.95),
+                visibility 0.7s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    
+}
+
+.notification.show .notification__message {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.notification-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.notification-content {
+    width: 320px;
+    font-size: 1rem;
+    grid-column: 1/-1;
+    overflow: hidden;
+
+}
+
+.notification__close-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    width: 20px;
+    height: 20px;
+    grid-column: 2/3;
+    grid-row: 1/2;
+    align-self: center;
+    cursor: pointer;
+}
+
+.notification__close-btn span {font-size: 1.8rem;}
+
+
+.message--info {
+    border-left-color: var(--color-brand--1);
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: 100% 100%;
+}
+
+.message--info .notification-title {color: var(--color-brand--1);}
+
+.message--success {
+    border-left-color: #00C56A;
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: 100% 100%;
+}
+
+.message--success .notification-title {color: #00654b}
+
+
+.message--error {
+    border-left-color: var(--color-brand--3);
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: 100% 100%;
+}
+
+.message--error .notification-title {color: var(--color-brand--3)} 
 /*
 ===================
     SIDEBAR       
@@ -173,7 +283,7 @@ a:visited {
     left: auto;
     right: -3.5rem;
     font-size: 1.5rem; 
-    color: #467DF7; 
+    color: var(--color-brand--1); 
     background-color: #f9f9f9;
     width: 2.8rem;
     height: 2.8rem;

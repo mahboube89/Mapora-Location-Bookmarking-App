@@ -4,7 +4,7 @@
 */
 
 import { LocationManager } from "./locationManager.js";
-
+import { showNotification } from "./utils.js";
 
 class App {
 
@@ -41,6 +41,8 @@ class App {
 
         // Set the "all" tab as selected by default
         document.getElementById("all").checked = true;
+
+        
     }
 
     _setEventListener() {
@@ -51,26 +53,54 @@ class App {
 
     async _getLocation() {  
 
-        if(navigator.geolocation) {
-            try {
-
-                const position = await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(resolve, reject)
-                });
-
-                if (!position) {
-                    throw new Error("Position is undefined.");
-                }
-                
-                this._loadMap(position);
-                
-            } catch (error) {
-                console.log("Could not get your Position.", error.message);
-    
-            }
-        } else {
-            console.log("Geolocation is not supported by this browser.");
+        if(! navigator.geolocation) {
+            showNotification("Geolocation is not supported by this browser.", "error");
+            throw new Error("Geolocation is not supported by this browser.");
         }
+
+        try {
+            // Wait for the user's geolocation
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+    
+            if (!position) throw new Error("Position is undefined.");
+            
+            this._loadMap(position);
+            
+            return position; // Return the position object
+
+        } catch (error) {
+            showNotification(`Unable to retrieve your location. ${error.message}`, "error");
+            throw error; // Re-throw the error for further handling if necessary
+        }
+    }
+
+    async _locateUser() {
+
+        try {
+            const position = await this._getLocation();
+
+            const { latitude, longitude } = position.coords;
+            const coords = [latitude, longitude];
+
+            // Center the map on the user's current location
+            this.#map.flyTo(coords, 15, {
+                animate: true,
+                duration: 1, // Smooth animation duration
+                easeLinearity: 0.2,
+            });
+
+            // Add or update the current location marker
+            this._addCurrentLocationMarker(coords);
+
+            // Notify the user of a successful location retrieval
+            showNotification("Location retrieved successfully!", "success");
+
+        } catch (error) {
+            console.error("Location retrieval failed:", error.message);
+        }
+            
     }
 
     _loadMap(position) {
@@ -109,35 +139,6 @@ class App {
         });
     }
 
-    async _locateUser() {
-
-        if (navigator.geolocation) {
-            try {
-                const position = await new Promise((resolve, reject) =>
-                    navigator.geolocation.getCurrentPosition(resolve, reject)
-                );
-    
-                const { latitude, longitude } = position.coords;
-                const coords = [latitude, longitude];
-    
-                // Center the map on the user's current location
-                this.#map.flyTo(coords, 15, {
-                    animate: true,
-                    duration: 1, // Smooth animation duration
-                    easeLinearity: 0.2,
-                });
-    
-                // Add or update the current location marker
-                this._addCurrentLocationMarker(coords);
-            } catch (error) {
-                alert('Could not retrieve your location. Please enable location services.');
-            }
-            
-        } else {
-            alert('Geolocation is not supported by your browser.');
-        }
-    }
-
 
     _showLocationOptions(mapEvent) {
         // Store clicked map coordinates
@@ -172,7 +173,8 @@ class App {
         // Update the "All" tab to include the new location
         this._renderLocation("all");
         
-        
+        // Show success notification
+        showNotification("Location saved successfully!","success");
     }
 
     _addCurrentLocationMarker (coords) {
@@ -350,7 +352,7 @@ class App {
         const location = this.locations.find(loc => loc.id === locationId);
         
         if (!location) {
-            console.error("Location not found!");
+            showNotification("Location not found!", "error");
             return;
         }
 
@@ -384,10 +386,13 @@ class App {
             tabElement.remove(); // Remove the tab element from the DOM
         }
 
+        showNotification("Location deleted successfully!", "success");
+
         // Optionally, update the UI if no locations are left
-    if (this.locations.length === 0) {
-        console.log("No saved locations available.");
-    }
+        if (this.locations.length === 0) {
+
+            showNotification("No saved locations available.", "info");
+        }
     
     }
 
@@ -396,7 +401,10 @@ class App {
     // Remove all items from localStorage
     reset() {
         localStorage.removeItem("locations");
+        this.locations = [];
         location.reload();
+
+        showNotification("All locations cleared successfully!", "info");
     }
 
 }
