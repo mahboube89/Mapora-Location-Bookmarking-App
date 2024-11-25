@@ -327,3 +327,49 @@ a:visited {
     border: 1px solid #f9f9f9;
     transform: scale(0.99);
 }
+
+
+
+/*
+===================
+    MAP      
+===================
+*/
+
+#map {
+    flex: 1;
+    height: 100%;
+    z-index:1;
+    position: relative
+}
+
+
+
+/*
+===================
+    LEAFLET      
+===================
+*/
+
+.leaflet-popup .leaflet-popup-content-wrapper {
+    border-radius: 5px;
+    padding-right: 0.6rem;
+    text-align: right;
+    width:164px !important;
+}
+  
+.leaflet-popup .leaflet-popup-content {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin: 8px 16px;
+    width: 100% !important;
+    gap:.5rem;
+
+}
+  
+.leaflet-popup-content img {margin-right:1px;}
+
+.leaflet-popup-content:last-child {
+    text-align: left;
+}
