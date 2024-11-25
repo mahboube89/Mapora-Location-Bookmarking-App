@@ -23,7 +23,7 @@ Here's a look at the application in action:
 
 - **Mobile View**
 [mobile-view-1](./images/screenshots/mobile-view-1.png)
-[mobile-view-2](./images/screenshots/mobile-view-1.png)
+[mobile-view-2](./images/screenshots/mobile-view-2.png)
 
 ### Features
 
@@ -71,18 +71,6 @@ Here's a look at the application in action:
              import L from 'leaflet';
              ```
 
-        ```
-
-
-### Screenshots
-
-- **Desktop View**
-[desktop-view-1](./images/desktop-view-1)
-[desktop-view-2](./images/desktop-view-2)
-
-- **Mobile View**
-[mobile-view-1](./images/mobile-view-1)
-[mobile-view-2](./images/mobile-view-1)
 
 ## Setup and Usage
 1- Clone the repository:
