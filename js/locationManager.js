@@ -29,7 +29,12 @@ export class LocationManager {
         // Set up event listeners for confirm and cancel buttons
         this._setEventListener();
     }
+    
 
+    /**
+     * Adds event listeners for confirm, cancel, and Escape key actions.
+     * Handles user interactions with the location selector.
+    */
     _setEventListener() {
 
         // Listen for confirm button click and handle it
@@ -42,6 +47,11 @@ export class LocationManager {
         document.addEventListener("keydown", this._handleEscape.bind(this));
     }
 
+
+    /**
+     * Displays the location options accordion.
+     * Adds an event listener for the Escape key to handle cancelling the selection.
+    */
     showOptions() {
         // Show the location options accordion
         this.locationOptions.classList.remove("location-selector--hidden");
@@ -50,19 +60,32 @@ export class LocationManager {
         document.addEventListener("keydown", this._handleEscape.bind(this));
     }
 
+
+    /**
+     * Handles Escape key press to cancel and reset the location options.
+     * @param {KeyboardEvent} event - The keyboard event triggered by pressing a key.
+     */
     _handleEscape(event) {
         // If the "Escape" key is pressed, cancel the selection
         if (event.key === "Escape") {
+
+            // Hide and reset the location options
             this.hideAndResetOptions();
         }
     }
 
 
+    /**
+     * Confirms the selected location type and notes.
+     * Collects data and passes it to the callback function provided by the App class.
+     */
     _confirmSelection() {
         
-        // Get the selected radio button
+        // Retrieve the selected radio button for location type
         const selectedRadio = document.querySelector('input[name="locationType"]:checked');
+
         if(!selectedRadio) {
+            // Show error notification if no location type is selected
             showNotification("Please select a location type.", "error");
             return;
         }     
@@ -94,8 +117,13 @@ export class LocationManager {
         }
     }
 
+    
+    /**
+     * Hides the location options accordion and resets its inputs.
+     * Clears the UI state for the next interaction.
+    */
     hideAndResetOptions() {
-        // Hide the accordion
+        // Hide the location options accordion
         this.locationOptions.style.display = "none";
         this.locationOptions.classList.add('location-selector--hidden');
 
@@ -109,6 +137,8 @@ export class LocationManager {
 
         // Clear note field and radio button selections
         document.querySelectorAll('.location-selector__textarea').forEach(textarea => textarea.value = "");
+
+        // Reset all radio button selections
         document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
 
     }

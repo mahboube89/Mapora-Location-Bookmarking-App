@@ -17,7 +17,7 @@ class App {
     #locateButton;
     #logoButton;
     #locationTabs;
-    #contentContainer
+    #contentContainer;
 
     constructor() {
 
@@ -45,25 +45,40 @@ class App {
         
     }
 
+
+    /**
+     * Sets up event listeners for user interactions.
+     * - Handles clicks on the "Locate Me" button and the logo to trigger user location retrieval.
+     */
     _setEventListener() {
         this.#locateButton.addEventListener('click', () => this._locateUser());
         this.#logoButton.addEventListener('click', () => this._locateUser());
     }
 
 
+    /**
+     * Retrieves the user's current geolocation.
+     * - Initializes the map if it's not already loaded.
+     * - Returns the position object if successful.
+     *
+     * @returns {Promise<Object>} The user's geolocation position object.
+     * @throws {Error} If geolocation is not supported or fails to retrieve the location.
+    */
     async _getLocation() {  
 
+        // Check if the browser supports geolocation
         if(! navigator.geolocation) {
             showNotification("Geolocation is not supported by this browser.", "error");
             throw new Error("Geolocation is not supported by this browser.");
         }
 
         try {
-            // Wait for the user's geolocation
+            // Request user's geolocation
             const position = await new Promise((resolve, reject) => {
                 navigator.geolocation.getCurrentPosition(resolve, reject);
             });
     
+            // Ensure position is valid
             if (!position) throw new Error("Position is undefined.");
             
             // Only initialize the map if it's not already initialized
@@ -79,9 +94,15 @@ class App {
         }
     }
 
+
+    /**
+     * Centers the map on the user's current location and adds a marker.
+     * Retrieves the current geolocation and updates the map view.
+     */
     async _locateUser() {
 
         try {
+            // Get the user's current geolocation
             const position = await this._getLocation();
 
             const { latitude, longitude } = position.coords;
@@ -102,16 +123,22 @@ class App {
 
         } catch (error) {
             console.error("Location retrieval failed:", error.message);
+            // Notification is handled inside _getLocation
         }
             
     }
 
+
+    /**
+     * Initializes the Leaflet map and adds saved locations.
+     * @param {Object} position - Geolocation position object.
+     */
     _loadMap(position) {
         
         const {latitude, longitude} = position.coords;
-
         const coords = [latitude, longitude];
 
+        // Initialize the Leaflet map with the user's coordinates
         this.#map = L.map('map').setView(coords, 15);
 
         // Add OpenStreetMap tiles
@@ -143,6 +170,11 @@ class App {
     }
 
 
+    /**
+     * Handles the map click event to show the location options accordion.
+     *
+     * @param {Object} mapEvent - The map event object containing information about the click event.
+     */
     _showLocationOptions(mapEvent) {
         // Store clicked map coordinates
         this.#lastClickedLocation = mapEvent.latlng;
@@ -151,100 +183,141 @@ class App {
         this.locationManager.showOptions();
     }
 
+
+    /**
+     * Adds a new location based on the user's input and clicked map coordinates.
+     *
+     * @param {Object} locationData - The data provided by the user, including type, notes, and timestamp.
+     */
     _addNewLocation(locationData) {
         
+        // Ensure there is a valid clicked location before proceeding
         if( !this.#lastClickedLocation) return; 
   
         const {lat, lng} = this.#lastClickedLocation;
-        // Add location to the array
         
-        // Combine location data with coordinates
+        // Combine user input data with the clicked coordinates
         const location = {
             ...locationData,
             coords: [lat, lng]
         }
 
-        // Add location to the array
+        // Add the new location to the locations array
         this.locations.push(location);
 
-        // Save the updated locations array to localStorage
+        // Persist the updated locations array to localStorage
         this._saveLocationsToStorage();
 
-        // Add a marker on the map
+        // Add a marker for the new location on the map
         this._addLocationMarker(location, true);
 
-        // Update the "All" tab to include the new location
+        // Refresh the "All" tab to include the new location
         this._renderLocation("all");
         
         // Show success notification
         showNotification("Location saved successfully!","success");
     }
 
+
+    /**
+     * Adds a marker on the map to indicate the user's current location.
+     * If a marker already exists, it is removed before adding a new one.
+     *
+     * @param {Array<number>} coords - The coordinates [latitude, longitude] for the current location.
+    */
     _addCurrentLocationMarker (coords) {
-        // Remove the existing current location marker if it exists
+        // Check if a current location marker already exists, and remove it if it does
         if (this.currentLocationMarker) {
             this.#map.removeLayer(this.currentLocationMarker);
         }
     
-        // Add a new marker for the current location
+        // Create and add a new marker at the provided coordinates
         this.currentLocationMarker = L.marker(coords)
             .addTo(this.#map)
-            .bindPopup('You are here', { autoClose: false, closeOnClick: false })
-            .openPopup(); // Automatically open the popup
+            .bindPopup('You are here', {
+                autoClose: false, // Ensure the popup remains open
+                closeOnClick: false  // Prevent the popup from closing when clicking elsewhere on the map
+            })
+            .openPopup(); // Automatically display the popup when the marker is added
     }
 
-
+    
+    /**
+     * Adds a marker to the map for a given location.
+     * @param {Object} location - The location data containing type, created_at, and coordinates.
+     * @param {boolean} shouldOpenPopup - Determines whether the popup should open automatically.
+    */
     _addLocationMarker(location, shouldOpenPopup = false) {
 
+        // Destructure the location data
         const { type, created_at, coords } = location;
         const [lat, lng] = coords;
     
+        // Construct the path for the icon based on the location type
         const iconPath = `images/popup-${type.toLowerCase().replace(/\s+/g, '-')}.png`; // Path for the icon
         const icon = `<img src="${iconPath}" width="20" height="20">`;
     
         // Ensure map exists before adding a marker
         if (!this.#map) return;
     
+        // Create a new Leaflet marker at the specified coordinates
         const marker = L.marker([lat, lng])
             .addTo(this.#map)
             .bindPopup(
                 L.popup({
                     maxWidth: 250,
                     minWidth: 100,
-                    autoClose: false,
-                    closeOnClick: false,
-                    className: `popup-${type.toLowerCase().replace(/\s+/g, '-')}`,
+                    autoClose: false, // Keep popup open even when another is opened
+                    closeOnClick: false, // Prevent closing popup when clicking outside
+                    className: `popup-${type.toLowerCase().replace(/\s+/g, '-')}`, // Custom class for styling
+
                 }).setContent(
+                    // Set the popup content to include the icon, type, and creation date
                     `<div>${icon}</div><div>${type}<br><small>${created_at}</small></div>`
                 )
             );
     
-        // Open popup if specified
+        // Automatically open the popup if specified
         if (shouldOpenPopup) {
             marker.openPopup();
         }
 
-        // Add the marker to the Map using locationId as the key
+        // Store the marker in the savedMarkers map using the location ID as the key
         this.savedMarkers.set(location.id, marker);
 
     }
 
+
+    /**
+     * Attaches event listeners to location tabs for filtering displayed locations.
+     * 
+     * Each tab triggers the rendering of locations that match its type (e.g., "all", "want-to-go").
+    */
     _setEventListenerToTabs() {
 
         // Add event listeners to each tab for filtering locations
         this.#locationTabs.forEach(tab => {
             tab.addEventListener("change", (e) => {              
                 const tabType = e.target.id; // e.g., "all", "want-to-go"
+
+                // Render locations dynamically based on the selected tab type
                 this._renderLocation(tabType);               
             });
         });
     }
 
 
+    /**
+     * Renders locations dynamically in the UI based on the selected tab.
+     * Filters locations, updates the DOM, and attaches necessary event listeners.
+     * 
+     * @param {string} tabType - The type of tab selected (e.g., "all", "want-to-go").
+     */
     _renderLocation(tabType) {
 
         this.#contentContainer.innerHTML = ""; // Clear previous content
 
+        // Create a wrapper for the filtered locations
         const savedLocationsWrapper = document.createElement("div");
         savedLocationsWrapper.classList.add("saved-location-wrapper");
 
@@ -253,8 +326,8 @@ class App {
         ? this.locations 
         : this.locations.filter(location => location.type.toLowerCase() === tabType)
 
-        this.filteredLocations.forEach(location => {
-        
+        // Iterate through filtered locations and build HTML for each
+        this.filteredLocations.forEach(location => {       
             const locationHTML = `
                 <div class="location-tab location-tab--${location.type}" data-id="${location.id}" >
                     <div class="location-tab__icon">
@@ -277,37 +350,46 @@ class App {
             savedLocationsWrapper.insertAdjacentHTML("beforeend", locationHTML);
         });
       
-        // Append filtered locations
+        // Append filtered locations to the content container if available
         if (this.filteredLocations.length > 0) {
             this.#contentContainer.appendChild(savedLocationsWrapper);
         }
         
-        // Add event listener to each location element
+        // Attach event listeners for each location tab to handle navigation
         const locationElements = savedLocationsWrapper.querySelectorAll(".location-tab");
         locationElements.forEach(locationElement => {
             locationElement.addEventListener( "click", (e) => this._moveToLocation(e));
         });
 
-        // Add event listeners for delete buttons
+        // Attach event listeners to delete buttons for each location
         this._setDeleteListeners();
 
     }
 
+
+    /**
+     * Moves the map to the location of a selected item and opens its marker popup.
+     * 
+     * @param {Event} event - The click event triggered by a location tab.
+     */
     _moveToLocation(event){
+
         const locationId = event.currentTarget.dataset.id;
 
+        // Find the corresponding location by ID
         const location = this.locations.find( (loc) => loc.id === locationId);
 
         if (location && location.coords) {
             const [lat, lng] = location.coords;
 
+            // Smoothly center the map on the location
             this.#map.flyTo([lat, lng], 15, {
                 animate:true,
                 duration: 1, // Duration in seconds
                 easeLinearity: 0.2 // Adjust for smoother transitions                  
             });
 
-            // Ensure the marker exists and open its popup
+            // Find and open the corresponding marker's popup
             const marker = this.savedMarkers.get(locationId);
             if (marker) {
                 marker.openPopup();
@@ -319,50 +401,81 @@ class App {
         }
     }
 
+
+    /**
+     * Saves the current locations array to localStorage.
+     * This ensures persistence of data across page reloads.
+    */
     _saveLocationsToStorage() {
+        // Convert the locations array to a JSON string and store it in localStorage
         localStorage.setItem('locations', JSON.stringify(this.locations));
     }
 
+
+    /**
+    * Loads saved locations from localStorage and updates the application state.
+    */
     _loadLocationsFromStorage() {
 
         // Get locations from localStorage
         const storedLocations = JSON.parse(localStorage.getItem("locations"));
 
+        // If there are no stored locations, exit the function
         if(!storedLocations) return;
 
+        // If locations exist, update the application state
         if (storedLocations) {
             this.locations = storedLocations;
 
-            // Render all locations in the tab section
+            // Render all locations in the "all" tab by default
             this._renderLocation("all");
         }
     }
     
 
+    /**
+     * Sets up event listeners for delete buttons in the location actions.
+     * This allows users to delete saved locations.
+    */
     _setDeleteListeners() {
+
+        // Select all delete buttons in the location actions
         const deleteButtons = document.querySelectorAll(".location-actions__delete-btn");
 
+        // Attach a click event listener to each delete button
         deleteButtons.forEach(button => {
 
             button.addEventListener( "click", (e) => {
-                const locationId = e.target.closest(".location-tab").dataset.id;                         
+
+                // Get the location ID associated with the delete button
+                const locationId = e.target.closest(".location-tab").dataset.id; 
+                
+                // Call the delete function for the specified location ID
                 this._deleteLocation(locationId);
             });
 
         });
     }
 
+
+    /**
+     * Deletes a location by its ID.
+     * Updates the map, localStorage, and UI dynamically.
+     * 
+     * @param {string} locationId - The ID of the location to be deleted.
+    */
     _deleteLocation(locationId) {
 
-        // Find the location to be deleted
+        // Find the location to be deleted from the array
         const location = this.locations.find(loc => loc.id === locationId);
         
+        // Show an error notification if the location is not found
         if (!location) {
             showNotification("Location not found!", "error");
             return;
         }
 
-        // Focus on the deleted location (if it exists)
+        // If the location exists, focus the map on its coordinates before deletion
         if (location && location.coords) {
             this.#map.flyTo(location.coords, 15, {
                 animate: true,
@@ -371,32 +484,30 @@ class App {
             });
         }
 
-
-        // Remove the location from the locations array
+        // Filter out the deleted location from the locations array
         this.locations = this.locations.filter(location => location.id !== locationId);
-        
-    
-        // Find the marker associated with the location
+           
+        // Find and remove the corresponding marker from the map
         const marker = this.savedMarkers.get(locationId);
         if (marker) {
             this.#map.removeLayer(marker); // Remove the marker from the map
             this.savedMarkers.delete(locationId); // Remove the marker from the Map
         }
     
-        // Update localStorage with the new locations array
+        // Save the updated locations array back to localStorage
         this._saveLocationsToStorage();
     
-        // Dynamically remove the tab from the DOM
+        // Dynamically remove the corresponding location tab from the DOM
         const tabElement = document.querySelector(`.location-tab[data-id="${locationId}"]`);
         if (tabElement) {
             tabElement.remove(); // Remove the tab element from the DOM
         }
 
+        // Show a success notification to the user
         showNotification("Location deleted successfully!", "success");
 
-        // Optionally, update the UI if no locations are left
+        // Notify the user if no locations are left
         if (this.locations.length === 0) {
-
             showNotification("No saved locations available.", "info");
         }
     
@@ -404,12 +515,14 @@ class App {
 
 
 
-    // Remove all items from localStorage
+    /**
+    * Resets all saved locations by clearing localStorage and reloading the app.
+    */
     reset() {
-        localStorage.removeItem("locations");
-        this.locations = [];
-        location.reload();
-
+        localStorage.removeItem("locations"); // Clear all saved locations from localStorage
+        this.locations = []; // Clear the locations array
+        location.reload(); // Reload the page to reset the UI
+        // Show an informational notification to the user
         showNotification("All locations cleared successfully!", "info");
     }
 
