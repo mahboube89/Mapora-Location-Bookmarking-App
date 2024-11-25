@@ -88,10 +88,27 @@ export class LocationManager {
         // Pass the location data to the callback (App class method)
         if(this.addLocationToMap) {
             this.addLocationToMap(locationData);
-            
+            this.hideAndResetOptions();
         }
     }
 
-    hideAndResetOptions() {}
+    hideAndResetOptions() {
+        // Hide the accordion
+        this.locationOptions.style.display = "none";
+        this.locationOptions.classList.add('location-selector--hidden');
+
+        // Delay reset for smooth UX
+        setTimeout(() => {
+            this.locationOptions.style.display = "flex"
+        }, 1000);
+
+        // Reset the location-widget__content height
+        document.querySelector(".location-widget__content").style.height = "540px";
+
+        // Clear note field and radio button selections
+        document.querySelectorAll('.location-selector__textarea').forEach(textarea => textarea.value = "");
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+
+    }
 
 }
