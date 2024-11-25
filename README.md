@@ -2,26 +2,17 @@
 
 Mapora is a map-based location management application that enables users to save their favorite locations, add notes, and categorize them under different types such as "Want to go," "Travel plans," and "Favorites." Users can interact with a map to add, view, and delete saved locations. The app features a modern, responsive UI, making it accessible on various screen sizes.
 
-## App-Screenshot
-
-Here's a look at the application in action:
-
-![Login](BikeRentalApp/Screenshots/LogIn.png)
-![SignUp](BikeRentalApp/Screenshots/SignUp-bikeRentalApp.png)
-![UserHome](BikeRentalApp/Screenshots/UserHome.png)
-![AdminDashboard](BikeRentalApp/Screenshots/UserManagement-AdminDashboard.png)
-![DATABASE](BikeRentalApp/Screenshots/DB-design.png)
-
-
 
 ### Screenshots
 
 - **Desktop View**
+
 ![desktop-view-1](./images/screenshots/desktop-view-1.png)
 ![desktop-view-2](./images/screenshots/desktop-view-2.png)
 ![desktop-view-3](./images/screenshots/desktop-view-3.png)
 
 - **Mobile View**
+
 ![mobile-view-1](./images/screenshots/mobile-view-1.png)
 
 ![mobile-view-2](./images/screenshots/mobile-view-2.png)
