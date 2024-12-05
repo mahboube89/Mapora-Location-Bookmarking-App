@@ -23,7 +23,7 @@
     <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Js Link -->
-    <script  type="module" src="js/app.js" defer></script>
+    <script  type="module" src="/js/app.js" defer></script>
 
     <title>Mapora - Location Bookmarking App</title>
 
@@ -44,8 +44,8 @@
         <div class="sidebar">
 
             <!-- Logo -->
-            <button id="logo" class="logo"><img src="/images/location-maps.svg" alt="Mapora logo"><span>Mapora</span></button>
-            <button id="locateMe" class="locate-me-btn"><img src="/images/location.svg" alt="Locate Me Icon"></button>
+            <button id="logo" class="logo"><img src="./images/location-maps.svg" alt="Mapora logo"><span>Mapora</span></button>
+            <button id="locateMe" class="locate-me-btn"><img src="./images/location.svg" alt="Locate Me Icon"></button>
 
             <!-- Location Selector Start-->
             <section class="location-selector location-selector--hidden" id="locationOptions">
@@ -58,7 +58,7 @@
                         
                         <!-- Label wraps the clickable content -->
                         <label for="article1" class="location-selector__label">
-                            <img src="images/bookmark.png" alt="Bookmark icon representing places to visit" width="25" height="25">
+                            <img src="./images/bookmark.png" alt="Bookmark icon representing places to visit" width="25" height="25">
                             <span class="location-selector__checkmark accordion-checkmark"></span>
                             <span class="location-selector__label-text">Want to go</span>
                         </label>
@@ -77,7 +77,7 @@
                         
                         <!-- Label wraps the clickable content -->
                         <label for="article2" class="location-selector__label">
-                            <img src="images/plan.png" alt="Map icon representing planned trips" width="25" height="25">
+                            <img src="./images/plan.png" alt="Map icon representing planned trips" width="25" height="25">
                             <span class="location-selector__checkmark accordion-checkmark"></span>
                             <span class="location-selector__label-text">Travel plans</span>
                         </label>
@@ -96,7 +96,7 @@
                         
                         <!-- Label wraps the clickable content -->
                         <label for="article3" class="location-selector__label">
-                            <img src="images/heart.png" alt="Heart icon representing favorite places" width="25" height="25" >
+                            <img src="./images/heart.png" alt="Heart icon representing favorite places" width="25" height="25" >
                             <span class="location-selector__checkmark accordion-checkmark"></span>
                             <span class="location-selector__label-text">Favorites</span>
                         </label>
@@ -128,11 +128,11 @@
     
                     <button class="location-widget__buttons">
                         <label for="all">All</label>
-                        <label for="want-to-go"><span>Want to go</span><img  src="images/bookmark.png" alt="Bookmark icon representing locations to visit" width="25" height="25"></label>
+                        <label for="want-to-go"><span>Want to go</span><img  src="./images/bookmark.png" alt="Bookmark icon representing locations to visit" width="25" height="25"></label>
                         
-                        <label for="travel-plans"><span>Travel plans</span><img src="images/plan.png" alt="Plan icon representing travel plans" width="25" height="25"></label>
+                        <label for="travel-plans"><span>Travel plans</span><img src="./images/plan.png" alt="Plan icon representing travel plans" width="25" height="25"></label>
     
-                        <label for="favorites"><span>Favorites</span><img src="images/heart.png" alt="Heart icon representing favorite locations" width="25" height="25"></label>
+                        <label for="favorites"><span>Favorites</span><img src="./images/heart.png" alt="Heart icon representing favorite locations" width="25" height="25"></label>
     
                     </button>
     

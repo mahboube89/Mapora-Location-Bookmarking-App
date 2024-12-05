@@ -6,6 +6,17 @@
 import { LocationManager } from "./locationManager.js";
 import { showNotification } from "./utils.js";
 
+import popupFavorites from "../images/popup-favorites.png";
+import popupTravelPlans from "../images/popup-travel-plans.png";
+import popupWantToGo from "../images/popup-want-to-go.png";
+
+const iconsMap = {
+    "favorites": popupFavorites,
+    "travel-plans": popupTravelPlans,
+    "want-to-go":popupWantToGo,
+}
+
+
 class App {
 
     #map; // Private variable to store the Leaflet map instance
@@ -254,7 +265,7 @@ class App {
         const [lat, lng] = coords;
     
         // Construct the path for the icon based on the location type
-        const iconPath = `images/popup-${type.toLowerCase().replace(/\s+/g, '-')}.png`; // Path for the icon
+        const iconPath = iconsMap[type.toLowerCase()] || popupFavorites; // Default to "favorites" if type is not found
         const icon = `<img src="${iconPath}" width="20" height="20">`;
     
         // Ensure map exists before adding a marker
@@ -327,11 +338,13 @@ class App {
         : this.locations.filter(location => location.type.toLowerCase() === tabType)
 
         // Iterate through filtered locations and build HTML for each
-        this.filteredLocations.forEach(location => {       
+        this.filteredLocations.forEach(location => {
+
+            const iconPath = iconsMap[location.type.toLowerCase()] || popupFavorites;       
             const locationHTML = `
                 <div class="location-tab location-tab--${location.type}" data-id="${location.id}" >
                     <div class="location-tab__icon">
-                        <img src="images/popup-${location.type}.png" width="25" height="25">
+                        <img src="${iconPath}" width="25" height="25">
                     </div>
                     <div class="location-tab__content">
                         <div class="location-info" >
