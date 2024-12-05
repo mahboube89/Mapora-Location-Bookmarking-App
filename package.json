@@ -1,0 +1,26 @@
+{
+  "name": "mapora-location-bookmarking-app",
+  "version": "1.0.0",
+  "description": "Mapora is a map-based location management application that enables users to save their favorite locations, add notes, and categorize them under different types such as \"Want to go,\" \"Travel plans,\" and \"Favorites.\" Users can interact with a map to add, view, and delete saved locations. The app features a modern, responsive UI, making it accessible on various screen sizes.",
+  "default": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahboube89/Mapora-Location-Bookmarking-App.git"
+  },
+  "keywords": [],
+  "author": "Mahboubeh Ranjbar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mahboube89/Mapora-Location-Bookmarking-App/issues"
+  },
+  "homepage": "https://github.com/mahboube89/Mapora-Location-Bookmarking-App#readme",
+  "devDependencies": {
+    "parcel": "^2.13.2",
+    "svgo": "^3.3.2"
+  }
+}
